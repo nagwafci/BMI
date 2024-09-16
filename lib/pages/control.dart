@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:newbmi/colors.dart';
+import 'package:newbmi/pages/result.dart';
 
 class control extends StatefulWidget {
-  const control({super.key});
+  bool ismale;
+  control({super.key, required this.ismale});
 
   @override
   State<control> createState() => _controlState();
 }
 
 class _controlState extends State<control> {
-  @override
   int height = 4;
   int weight = 4;
+  @override
   Widget build(BuildContext context) {
+    Color mainColor = widget.ismale == true ? kblue : kred;
+
     return Scaffold(
       body: SafeArea(
           child: Stack(
@@ -31,43 +35,41 @@ class _controlState extends State<control> {
                         Row(
                           children: [
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
                                 icon: Icon(
                                   Icons.arrow_back_ios,
                                   size: 40,
-                                  color: kblue,
+                                  color: mainColor,
                                 )),
                             Text(
                               "BMI",
-                              style: TextStyle(color: kblue, fontSize: 26),
+                              style: TextStyle(color: mainColor, fontSize: 26),
                             )
                           ],
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SizedBox(
-                              height: 100,
-                            ),
-                            Text(
-                              "Male",
-                              style: TextStyle(color: kblue, fontSize: 26),
-                            ),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.male,
-                                  size: 85,
-                                  color: kblue,
-                                )),
-                            SizedBox(
-                              height: 100,
-                            ),
-                            Text(
-                              "Weight KG",
-                              style: TextStyle(color: kblue, fontSize: 26),
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                widget.ismale == true ? "Male" : "Female",
+                                style: TextStyle(fontSize: 26),
+                              ),
+                              Icon(
+                                widget.ismale == true
+                                    ? Icons.male
+                                    : Icons.female,
+                                size: 120,
+                                color: mainColor,
+                              ),
+                              Text(
+                                "Weight KG",
+                                style: TextStyle(fontSize: 26),
+                              ),
+                            ],
+                          ),
                         ),
                         Expanded(
                             child: ListView.builder(
@@ -87,9 +89,9 @@ class _controlState extends State<control> {
                                             "$index",
                                             style: TextStyle(
                                               fontSize:
-                                                  index == height ? 42 : 24,
-                                              color: index == height
-                                                  ? kblue
+                                                  index == weight ? 42 : 24,
+                                              color: index == weight
+                                                  ? mainColor
                                                   : Colors.black,
                                             ),
                                           ),
@@ -103,7 +105,7 @@ class _controlState extends State<control> {
               ),
               Expanded(
                 child: Container(
-                  decoration: BoxDecoration(color: kblue),
+                  decoration: BoxDecoration(color: mainColor),
                   child: Padding(
                     padding: EdgeInsets.all(12),
                     child: Column(
@@ -126,15 +128,24 @@ class _controlState extends State<control> {
                                             height = index;
                                           });
                                         },
-                                        child: Center(
-                                          child: Text(
-                                            "$index",
-                                            style: TextStyle(
-                                              fontSize:
-                                                  index == height ? 42 : 24,
-                                              color: index == height
-                                                  ? kblue
-                                                  : Colors.white,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: index == height
+                                                ? Colors.white
+                                                : mainColor,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "$index",
+                                              style: TextStyle(
+                                                fontSize:
+                                                    index == height ? 42 : 24,
+                                                color: index == height
+                                                    ? mainColor
+                                                    : Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -151,8 +162,19 @@ class _controlState extends State<control> {
               bottom: 0,
               left: MediaQuery.sizeOf(context).width * 2 / 3 - 40,
               child: ElevatedButton(
-                child: Text("Calcu"),
-                onPressed: () {},
+                style: ElevatedButton.styleFrom(backgroundColor: kyello),
+                child: Text(
+                  "Calcu".toUpperCase(),
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return result(
+                        height: height.toDouble(),
+                        weight: weight.toDouble(),
+                        isMale: widget.ismale);
+                  }));
+                },
               ))
         ],
       )),

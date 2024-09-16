@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newbmi/colors.dart';
+import 'package:newbmi/gendercard.dart';
+import 'package:newbmi/pages/control.dart';
 
 class homepage extends StatefulWidget {
   const homepage({super.key});
@@ -15,56 +17,22 @@ class _homepageState extends State<homepage> {
       body: SafeArea(
           child: Row(
         children: [
-          GestureDetector(
-            onTap: () {},
-            child: Expanded(
-              child: Container(
-                decoration: BoxDecoration(color: kblue),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.male,
-                      color: Colors.white,
-                      size: 70,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Male",
-                      style: TextStyle(color: Colors.white, fontSize: 26),
-                    )
-                  ],
-                ),
-              ),
-            ),
+          GenderCard(
+            gender: "male",
+            ontap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return control(ismale: true);
+              }));
+            },
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Expanded(
-              child: Container(
-                decoration: BoxDecoration(color: kred),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.female,
-                      color: Colors.white,
-                      size: 70,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Female",
-                      style: TextStyle(color: Colors.white, fontSize: 26),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          )
+          GenderCard(
+            gender: "female",
+            ontap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return control(ismale: false);
+              }));
+            },
+          ),
         ],
       )),
     );
